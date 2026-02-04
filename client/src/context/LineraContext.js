@@ -215,7 +215,7 @@ const LineraContextProvider = ({ children }) => {
       }
 
       setMatchStatus(data?.matchStatus ?? null);
-      setLetters(data?.letters ?? (nextGame?.letters ?? "") || "");
+      setLetters(data?.letters ?? nextGame?.letters ?? "");
       setRound(Number(nextGame?.currentRound ?? data?.round ?? 0));
       setRoundPhase(data?.roundPhase ?? nextGame?.roundPhase ?? null);
       setIsHost(Boolean(data?.isHost));

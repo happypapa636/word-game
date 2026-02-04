@@ -34,6 +34,8 @@ for var in LINERA_NETWORK LINERA_NETWORK_DIR LINERA_STORAGE LINERA_NETWORK_STORA
     path="${!var}"
     path="${path#rocksdb:}"  # strip rocksdb: prefix if present
     if [ -f "$path" ]; then
+      echo ">>> Clearing helper storage file ($path)..."
+      rm -f "$path"
       path="$(dirname "$path")"
     fi
     if [ -d "$path" ]; then
@@ -42,6 +44,20 @@ for var in LINERA_NETWORK LINERA_NETWORK_DIR LINERA_STORAGE LINERA_NETWORK_STORA
     fi
   fi
 done 2>/dev/null || true
+
+# Also find and remove any linera-* or .linera dirs under /tmp and common roots (catches helper temp dirs)
+for root in /tmp /build "$HOME"; do
+  if [ -d "$root" ]; then
+    find "$root" -maxdepth 3 -type d -name 'linera-*' 2>/dev/null | while read -r d; do
+      echo ">>> Clearing Linera dir ($d)..."
+      rm -rf "$d"
+    done
+    find "$root" -maxdepth 3 -type d -name '.linera' 2>/dev/null | while read -r d; do
+      echo ">>> Clearing Linera dir ($d)..."
+      rm -rf "$d"
+    done
+  fi
+done
 
 linera_spawn linera net up --with-faucet
 
