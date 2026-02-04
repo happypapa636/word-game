@@ -105,6 +105,27 @@ const defaultPlayerName = (chainId) => {
   return `Player-${String(chainId).slice(0, 6)}`;
 };
 
+/** Clear Linera-related IndexedDB so a refresh can reconnect to a recreated network. */
+const clearLineraIndexedDB = () => {
+  try {
+    if (typeof indexedDB === "undefined") return;
+    if (typeof indexedDB.databases === "function") {
+      indexedDB.databases().then((dbs) => {
+        (dbs || []).forEach((db) => {
+          if (db?.name && /linera/i.test(db.name)) {
+            indexedDB.deleteDatabase(db.name);
+          }
+        });
+      }).catch(() => {});
+    }
+    ["linera", "linera-wallet", "linera_client"].forEach((name) => {
+      try {
+        indexedDB.deleteDatabase(name);
+      } catch {}
+    });
+  } catch {}
+};
+
 const LineraContextProvider = ({ children }) => {
   const [ready, setReady] = useState(false);
   const [initError, setInitError] = useState("");
@@ -395,14 +416,50 @@ const LineraContextProvider = ({ children }) => {
         setInitStage("Ready");
       } catch (e) {
         if (isMountedRef.current) {
-          setInitError(String(e?.message || e));
-          setInitStage("Initialization failed");
+          const msg = String(e?.message ?? e);
+          if (msg.toLowerCase().includes("storage is already initialized")) {
+            try {
+              const keysToRemove = [];
+              for (let i = 0; i < localStorage.length; i++) {
+                const key = localStorage.key(i);
+                if (key && (key.startsWith("linera_sync_height:") || key === "linera_mnemonic")) {
+                  keysToRemove.push(key);
+                }
+              }
+              keysToRemove.forEach((k) => localStorage.removeItem(k));
+              clearLineraIndexedDB();
+            } catch {}
+            setInitError("The network was recreated. Refresh the page to reconnect.");
+            setInitStage("Network recreated");
+            console.warn("Linera storage already initialized; cleared local state. Refresh to reconnect.", e);
+          } else {
+            setInitError(msg);
+            setInitStage("Initialization failed");
+          }
         }
       }
     } catch (e) {
       if (isMountedRef.current) {
-        setInitError(String(e?.message || e));
-        setInitStage("Initialization failed");
+        const msg = String(e?.message ?? e);
+        if (msg.toLowerCase().includes("storage is already initialized")) {
+          try {
+            const keysToRemove = [];
+            for (let i = 0; i < localStorage.length; i++) {
+              const key = localStorage.key(i);
+              if (key && (key.startsWith("linera_sync_height:") || key === "linera_mnemonic")) {
+                keysToRemove.push(key);
+              }
+            }
+            keysToRemove.forEach((k) => localStorage.removeItem(k));
+            clearLineraIndexedDB();
+          } catch {}
+          setInitError("The network was recreated. Refresh the page to reconnect.");
+          setInitStage("Network recreated");
+          console.warn("Linera storage already initialized; cleared local state. Refresh to reconnect.", e);
+        } else {
+          setInitError(msg);
+          setInitStage("Initialization failed");
+        }
       }
     } finally {
       initInProgressRef.current = false;

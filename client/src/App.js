@@ -15,11 +15,23 @@ const WalletBanner = () => {
     return null;
   }
 
+  const isNetworkRecreated =
+    initError && initError.includes("Refresh the page to reconnect");
+
   return (
     <div className="wallet_banner">
       {!ready ? (
         <div className="wallet_banner_line">
           {initError ? `Error: ${initError}` : initStage || "Initializing wallet..."}
+          {isNetworkRecreated && (
+            <button
+              type="button"
+              className="wallet_banner_refresh"
+              onClick={() => window.location.reload()}
+            >
+              Refresh
+            </button>
+          )}
         </div>
       ) : (
         <>

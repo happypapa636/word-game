@@ -9,7 +9,7 @@ use linera_sdk::{
 };
 use word_duel::{
     CrossChainMessage, Game, InstantiationArgument, MatchStatus, Operation, PlayerInfo,
-    RoundPhase, RoundRecord, WordDuelAbi, WordDuelParameters, word_score,
+    RoundPhase, RoundRecord, WordDuelParameters, word_score,
 };
 
 use self::state::WordDuelState;

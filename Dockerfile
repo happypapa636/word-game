@@ -2,7 +2,9 @@ FROM rust:1.86-slim
 
 SHELL ["bash", "-c"]
 
-# Install system dependencies
+# Install system dependencies. Do NOT install procps: Linera's spawn cleanup runs
+# "xargs kill" after READY!; if kill exists it kills the faucet/validator, so we'd get
+# "Connection refused" when waiting for the faucet. Leaving kill out keeps them running.
 RUN apt-get update && apt-get install -y \
     pkg-config \
     protobuf-compiler \
