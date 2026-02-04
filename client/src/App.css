@@ -1,0 +1,48 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.main {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #87CEEB 0%, #B0E0E6 50%, #FFFFFF 100%);
+}
+
+.container {
+  min-height: 100vh;
+  position: relative;
+}
+
+.wallet_banner {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  background: rgba(30, 144, 255, 0.9);
+  color: white;
+  padding: 0.5rem 1rem;
+  font-size: 0.85rem;
+  z-index: 1000;
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.wallet_banner_line {
+  font-family: monospace;
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+    monospace;
+}

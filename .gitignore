@@ -1,0 +1,11 @@
+# Client
+client/node_modules
+client/.env
+client/build
+
+# Word Duel Rust
+word-duel/target
+
+# Linera (when run locally)
+.linera
+linera-*

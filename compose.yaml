@@ -1,0 +1,15 @@
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "5173:5173"
+      - "8080:8080"
+      - "9001:9001"
+      - "13001:13001"
+    volumes:
+      - .:/build
+    environment:
+      - LINERA_FAUCET_URL=http://localhost:8080
+    restart: unless-stopped

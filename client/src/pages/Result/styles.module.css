@@ -1,0 +1,70 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  padding: 2rem;
+  background: linear-gradient(135deg, #87CEEB 0%, #B0E0E6 50%, #FFFFFF 100%);
+}
+
+.loading {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, #87CEEB 0%, #B0E0E6 50%, #FFFFFF 100%);
+  font-size: 1.2rem;
+  color: #4682B4;
+}
+
+.result_card {
+  background: white;
+  border-radius: 16px;
+  padding: 2.5rem;
+  max-width: 420px;
+  width: 100%;
+  box-shadow: 0 8px 24px rgba(30, 144, 255, 0.2);
+  border: 2px solid #87CEEB;
+}
+
+.title {
+  font-size: 2.5rem;
+  font-weight: bold;
+  text-align: center;
+  margin-bottom: 1.5rem;
+}
+
+.scores {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 2rem;
+  margin-bottom: 2rem;
+}
+
+.score_item {
+  text-align: center;
+}
+
+.score_label {
+  font-size: 0.95rem;
+  color: #4682B4;
+  margin-bottom: 0.25rem;
+}
+
+.score_value {
+  font-size: 2.5rem;
+  font-weight: bold;
+  color: #1E90FF;
+}
+
+.score_separator {
+  font-size: 1.5rem;
+  color: #87CEEB;
+}
+
+.btn_container {
+  display: flex;
+  justify-content: center;
+}
